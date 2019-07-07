@@ -96,7 +96,7 @@ class Drag:
 
         # Calculate the exponent 
         expt_top = self.data['surface_g'] * self.data['molar_mass']
-        expt = 1 + (exp_top / (self.R * Lb))
+        expt = 1 + (expt_top / (self.R * Lb))
 
         # Calculate the density multiple
         rho_mult = pow((Tb/(Tb + Lb * (height - H))), expt)
@@ -104,7 +104,7 @@ class Drag:
         # Return the new density
         return rho_mult * rho
 
-    def density_two(self, key: int, height: float, rho: float) -> float:
+    def density_two(self, key: int, height: float) -> float:
         '''
         Function: density_two
         Params:
@@ -128,8 +128,41 @@ class Drag:
         # Return the new density
         return rho * exp(expt)
 
+    def drag(self, mass: float, height: float, vel: float, Cd: float,
+             area: float) -> float:
+        '''
+        Function: drag
+        Params:
+            mass: [float] The mass of an object
+            height: [float] The current y position of an object
+            vel: [float] The current velocity of 1-D of an object
+            Cd: [float] The coefficient of drag of an object
+            area: [float] The surface area being pelted with atmosphere
+        Description:
+            drag takes in details concerning an object and calculates the
+            acceleration due to drag on that object.
+        '''
+
+        # Calculate the density of atmosphere at that location
+        rho = 0.
+        for key, item in enumerate(self.data['scale_rho']):
+            if height < item[0]:
+                continue
+            else:
+                if self.data['lapse_rate'][key][0] == 0:
+                    rho = self.density_two(key, height)
+                else:
+                    rho = self.density_one(key, height)
+
+        # Calculate the force of drag
+        Fd = (rho * Cd * area * pow(vel, 2)) / 2
+
+        # Return the acceleration due to drag
+        return Fd / mass
+
 # Test
 
 if __name__ == '__main__':
     atmo = Drag('earth')
     print(atmo.data['scale_rho'])
+    print(atmo.drag(400, 35000, 100, 0.75, 8))
