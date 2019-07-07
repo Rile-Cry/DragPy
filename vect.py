@@ -17,7 +17,17 @@ class Vect:
     Params:
         *args: [float, int] Values to be made into a vector
     Functions:
-        None
+        append:
+        add: Adds vectors or numbers to a vector
+        sub: Subtracts vectors or numbers from a vector
+        mult: Multiplies numbers with a vector
+        div: Divides vectors by a number
+        dot: Results in the dot product between two vectors
+        cross: Results in the cross product between two vectors (3D only)
+        angle: The angle between some vector and 'origin' vector
+        angle_between: The angle between two vectors
+        zeros: A vector of zeros
+        ones: A vector of ones
     '''
 
     # Vector setup
@@ -474,6 +484,27 @@ class Vect:
             raise(Exception('Both vectors are not 3-dimensional'))
 
         # Return the new vector
+        return new_v
+
+    def fill(self, dim: int, val: Union[float, int]=0) -> 'Vect':
+        '''
+        Function: zeros
+        Params:
+            dim: [int] The dimension of the vector
+            val: [float, int] The value to fill the vector with
+        Description:
+            zeros creates a vector of dim-dimension full of val
+        '''
+        # A new vector to hold the values
+        new_v = Vect()
+
+        # Loop to fill the vector with 0s
+        i = 0
+        while i < dim:
+            new_v.append(val)
+            i += 1
+
+        # Return the vector
         return new_v
 
 # Test condition
