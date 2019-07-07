@@ -15,7 +15,9 @@ class Report:
         filename: [str] A name for the file that will contain the report
         rep_type: [str] Type of report {'report', 'log'}
     Functions:
-        None
+        convert(): Takes any data and converts it to a string
+        setData(): Takes in data and stores it in the instance
+        report(): Takes the stored data and writes it to a file
     '''
 
     # Class Setup
