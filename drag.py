@@ -15,9 +15,12 @@ class Drag:
     '''
     Class: Drag
     Params:
-        None
+        filename: [str] The name of the file used for the atmospheric model
     Functions:
-        None
+        density_one: Takes in the current height and lapse_rate index to
+            calculate the current density at a height, lapse rate != 0
+        density_two: Takes in the current height and lapse_rate index to
+            calculate the current density at a height, lapse rate == 0
     '''
 
     # Constants
@@ -50,7 +53,7 @@ class Drag:
         def __rho_two(height: float, H: float, temp_b: float, g: float,
                       M: float, rho: float, R: float) -> float:
             # Use the same equation located in density_two
-            expt = (-g * M * (height - H))
+            expt = (-g * M * (height - H)) / (R * temp_b)
             return rho * exp(expt)
 
         # Create a tempurature and density scale with height
