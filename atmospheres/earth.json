@@ -1,0 +1,7 @@
+{
+    "molar_mass": 0.0289644,
+    "surface_temp": 288.15,
+    "surface_density": 1.2250,
+    "surface_g": 9.8066,
+    "lapse_rate": [[0,0], [1,1]]
+}
