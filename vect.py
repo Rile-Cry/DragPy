@@ -46,7 +46,7 @@ class Vect:
 
     # Makes the vector iterable
     def __iter__(self) -> 'Vect':
-        return self.vector
+        return iter(self.vector)
 
     # Allows of len on the vector
     def __len__(self) -> int:
