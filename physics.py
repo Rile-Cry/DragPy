@@ -6,6 +6,7 @@
 
 # Imports
 
+from copy import deepcopy
 from drag import Drag
 from typing import Union
 from vect import Vect
@@ -16,9 +17,10 @@ class Physics:
     '''
     Class: Physics
     Params:
-        None
+        dim: [float] The dimensionality of the engine
+        filename: [str] The name of the file for atmospheric modelling
     Functions:
-        None
+        addBody: Adds a body to the system
     '''
 
     # Engine setup
@@ -34,19 +36,28 @@ class Physics:
             self.g[1] = -g
 
     # Utility Functions
-    def addBody(self, body: dict) -> None:
+    def addBody(self, m: float, pos: 'Vect', vel: 'Vect',
+                acc: 'Vect', Cd: Union[float, None]=None,
+                area: Union[float, None]=None) -> None:
         '''
         Function: addBody
         Params:
-            body: [dict] The body to be added to the engine
+            m: [float] The mass of the object
+            pos: [vector] The initial position of the object
+            vel: [vector] The initial velocity of the object
+            acc: [vector] The initial acceleration of the object
+            Cd: (optional)[float] The drag coefficient of the object
+            area: (optional)[float] The cross-sectional area affected by drag
         Description:
             addBody adds a body to the engine, typically should hold the keys
                 (mass, pos: [vect], vel: [vect], acc: [vect], area, Cd)
         '''
         # Adds the body to the list of bodies in the system
-        if type(self.bodies) == list:
-            self.bodies.append(body)
-            print(self.bodies)
+        body = {'mass': m, 'pos': pos, 'vel': vel, 'acc': acc}
+        if Cd != None and area != None:
+            body['Cd'] = Cd
+            body['area'] = area
+        self.bodies.append(body.copy())
 
     def grabBodies(self) -> None:
         return self.bodies
@@ -126,7 +137,6 @@ class Physics:
         self.update_acc()
 
         if result:
-            print(self.bodies)
             return self.bodies
 
     def sim(self, dt: float, time: float) -> list:
@@ -144,7 +154,7 @@ class Physics:
         # While loop for simulation
         t = 0
         while t < time:
-            result.append(self.update(dt, True))
+            result.append(deepcopy(self.update(dt, True)))
             t += dt
 
         # Return the results
@@ -155,7 +165,8 @@ class Physics:
 if __name__ == '__main__':
     engine = Physics()
     print(engine.g)
-    a = {'mass': 400, 'pos': Vect(0., 10000., 0.), 'vel': Vect(0., 0., 0.),
-         'acc': Vect(0., 0., 0.), 'Cd': 0.75, 'area': 8}
-    engine.addBody(a)
+    engine.addBody(400, Vect(0, 10000, 0), Vect(0, 0, 0), Vect(0, 0, 0),
+                   0.75, 8)
     sim_res = engine.sim(0.1, 100)
+    for sim in sim_res:
+        print(sim)

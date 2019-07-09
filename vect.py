@@ -65,7 +65,7 @@ class Vect:
 
     # Allows returning of the vector
     def __repr__(self) -> list:
-        return self.vector
+        return str(self.vector)
 
     # Allows returning of string for print
     def __str__(self) -> str:
@@ -136,7 +136,7 @@ class Vect:
 
         # Return the new vector
         return new_v
-    
+
     # Allows for rounding of the vector
     def __round__(self, dig: int) -> 'Vect':
         # Creates a new vector to hold the new values
@@ -463,7 +463,7 @@ class Vect:
 
         # return the angle between
         return self.angle_between(origin, ret_type)
-    
+
     def cross(self, other: 'Vect') -> 'Vect':
         '''
         Function: cross
