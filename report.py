@@ -26,7 +26,7 @@ class Report:
                  rep_type: str='report') -> None:
         # Set the class variables
         self.rep_type = rep_type
-        self.filename = filename
+        self.filename = './reports/' + filename
         self.data = ''
 
     # Utility Functions

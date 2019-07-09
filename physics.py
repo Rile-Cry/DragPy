@@ -28,6 +28,7 @@ class Physics:
         # Define the acceleration at some surface
         self.model = Drag(filename)
         self.bodies = []
+        self.dim = dim
         g = self.model.data['surface_g']
         if dim == 1:
             self.g = Vect(-g)
@@ -121,6 +122,21 @@ class Physics:
                     body['acc'] = self.g
             self.bodies[i] = body
 
+    def checkGround(self) -> bool:
+        '''
+        Function: checkGround
+        Params:
+            None
+        Description:
+            checkGround checks to see if any bodies are less than 0 m.
+        '''
+        # Check dimensionality
+        if self.dim > 1:
+            for body in self.bodies:
+                if body['pos'][1] <= 0:
+                    return True
+        return False
+
     def update(self, dt: float, result: bool=False) -> Union[None, list]:
         '''
         Function: update
@@ -153,7 +169,7 @@ class Physics:
 
         # While loop for simulation
         t = 0
-        while t < time:
+        while t < time and not self.checkGround():
             result.append(deepcopy(self.update(dt, True)))
             t += dt
 
