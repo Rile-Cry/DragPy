@@ -1,16 +1,16 @@
 # Program Title: Dragpy
 # Created By: Rile_Cry
 # Created On: 24 June 2019
-# Current Version: 1.0
+# Current Version: 1.0.1
 # Description: Dragpy is a aerodynamic entry simulation program originally
 # built for L'Space Academy Level 1 2019 for atmospheric entry of Titan.
 
 # Imports
 
 import glob
+import numpy as np
 from physics import Physics
 from report import Report
-from vect import Vect
 
 # Main Function
 
@@ -42,15 +42,18 @@ def main() -> None:
     while True:
         try:
             mass = float(input('\nMass of object (kg): '))
-            pos = Vect()
+            pos = []
             for i in range(dim):
                 pos.append(float(input(f'\nPosition D-{i+1} (m): ')))
-            vel = Vect()
+            pos = np.array(pos)
+            vel = []
             for i in range(dim):
                 vel.append(float(input(f'\nVelocity D-{i+1} (m/s): ')))
-            acc = Vect()
+            vel = np.array(vel)
+            acc = []
             for i in range(dim):
                 acc.append(float(input(f'\nAcceleration D-{i+1} (m/s^2): ')))
+            acc = np.array(acc)
             Cd = input('\nCoefficient of drag (leave empty if none): ')
             if Cd != '':
                 area = float(input('\nArea affected by drag (m^3): '))

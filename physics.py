@@ -8,8 +8,8 @@
 
 from copy import deepcopy
 from drag import Drag
+import numpy as np
 from typing import Union
-from vect import Vect
 
 # Main Class
 
@@ -33,12 +33,12 @@ class Physics:
         if dim == 1:
             self.g = Vect(-g)
         else:
-            self.g = Vect().fill(dim)
+            self.g = np.zeros([dim])
             self.g[1] = -g
 
     # Utility Functions
-    def addBody(self, m: float, pos: 'Vect', vel: 'Vect',
-                acc: 'Vect', Cd: Union[float, None]=None,
+    def addBody(self, m: float, pos: 'ndarray', vel: 'ndrray',
+                acc: 'ndarray', Cd: Union[float, None]=None,
                 area: Union[float, None]=None) -> None:
         '''
         Function: addBody
