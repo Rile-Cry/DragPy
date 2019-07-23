@@ -2,15 +2,30 @@
     pos_hint: {'center_x': .5, 'center_y': .5}
     do_default_tab: False
 
+    texty: textTab
+    texty2: textLabel
+
     TabbedPanelItem:
         text: 'Simulation'
-        Label:
-            text: 'N/A'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                id: textLabel
+                text: 'N/A'
+            BoxLayout:
+                orientation: 'vertical'
+                TextInput:
+                    id: textTab
+                    text: 'N/A'
+                Label:
+                    text: 'N/A'
     TabbedPanelItem:
+        id: PanelTwo
         text: 'Atmosphere'
         Label:
             text: 'N/A'
     TabbedPanelItem:
+        id: PanelThree
         text: 'Surface'
         Label:
             text: 'N/A'
