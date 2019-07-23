@@ -1,16 +1,37 @@
 # Program Title: Dragpy
 # Created By: Rile_Cry
 # Created On: 24 June 2019
-# Current Version: 1.0.1
+# Current Version: 1.0.2
 # Description: Dragpy is a aerodynamic entry simulation program originally
 # built for L'Space Academy Level 1 2019 for atmospheric entry of Titan.
 
 # Imports
 
 import glob
+import matplotlib.pyplot as plt
 import numpy as np
 from physics import Physics
 from report import Report
+
+# Functions
+
+def breakup(string: str) -> list:
+    # Initialize the list variable
+    lst = []
+
+    # Run through the string and grab any that are before commas
+    word = ''
+    for i, let in enumerate(string):
+        if i == len(string):
+            lst.append(word)
+        elif let == ',':
+            lst.append(word)
+            word = ''
+        else:
+            word += let
+
+    # Return the list
+    return lst
 
 # Main Function
 
@@ -42,17 +63,15 @@ def main() -> None:
     while True:
         try:
             mass = float(input('\nMass of object (kg): '))
-            pos = []
-            for i in range(dim):
-                pos.append(float(input(f'\nPosition D-{i+1} (m): ')))
+            pos = list(map(float,
+                           breakup(input("\nPosition (1,2,3,...) (m): "))))
             pos = np.array(pos)
-            vel = []
-            for i in range(dim):
-                vel.append(float(input(f'\nVelocity D-{i+1} (m/s): ')))
+            vel = list(map(float,
+                           breakup(input("\nVelocity (1,2,3,...) (m/s): "))))
             vel = np.array(vel)
-            acc = []
-            for i in range(dim):
-                acc.append(float(input(f'\nAcceleration D-{i+1} (m/s^2): ')))
+            acc = list(map(float,
+                           breakup(
+                               input("\nAcceleration (1,2,...) (m/s^2): "))))
             acc = np.array(acc)
             Cd = input('\nCoefficient of drag (leave empty if none): ')
             if Cd != '':
@@ -84,8 +103,22 @@ def main() -> None:
             rep.report()
             break
         elif ans == 'n':
+            x_data = []
+            y_data = []
+            v_data = []
+            a_data = []
+            for n in sim:
+                y_data.append(n[0]['pos'][1])
+                v_data.append(n[0]['vel'][1])
+                a_data.append(n[0]['acc'][1])
             print('\nEnd of simulation result:')
             print(sim[len(sim) - 1])
+            x_data = np.linspace(0, time, len(sim))
+            plt.plot(x_data, y_data)
+            plt.axis([0, time, 0, max(y_data)])
+            plt.xlabel('Time (s)')
+            plt.ylabel('Altitude (m)')
+            plt.show()
             break
         else:
             print('Answer was invalid, try again.\n')
